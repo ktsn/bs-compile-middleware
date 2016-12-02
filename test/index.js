@@ -28,6 +28,7 @@ function test ({
         } else {
           throw new Error('[test] expects or expectsMatch is required')
         }
+        resolve()
       }
     }, resolve)
 

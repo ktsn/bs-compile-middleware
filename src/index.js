@@ -29,7 +29,7 @@ export function compileMiddleware (options: Options) {
     }
   })
 
-  return (req: any, res: any, done: Function) => {
+  return (req: any, res: any, next: Function) => {
     const pathname = normalizePathname(url.parse(req.url).pathname || '')
 
     forEachAsync(
@@ -42,8 +42,7 @@ export function compileMiddleware (options: Options) {
 
         fs.readFile(srcPath, (error, data) => {
           if (error) {
-            res.end(formatError(error))
-            return next(true)
+            return res.end(formatError(error))
           }
 
           let out
@@ -54,10 +53,9 @@ export function compileMiddleware (options: Options) {
           }
 
           res.end(out)
-          next(true)
         })
       },
-      done
+      next
     )
   }
 }
@@ -71,16 +69,13 @@ function normalizePathname (pathname: string): string {
 
 function forEachAsync <T>(
   xs: T[],
-  f: (x: T, next: (isEnd: ?boolean) => void) => void,
+  f: (x: T, next: () => void) => void,
   done: () => void
 ): void {
   if (xs.length === 0) return done()
 
   const [head, ...tail] = xs
-  f(head, isEnd => {
-    if (isEnd) return done()
-    forEachAsync(tail, f, done)
-  })
+  f(head, () => forEachAsync(tail, f, done))
 }
 
 function formatError (error: Error) {
