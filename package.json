@@ -2,8 +2,12 @@
   "name": "bs-compile-middleware",
   "version": "0.0.0",
   "author": "katashin",
-  "description": "",
-  "keywords": [],
+  "description": "Compilation middleware for Browsersync",
+  "keywords": [
+    "browsersync",
+    "compile",
+    "middleware"
+  ],
   "license": "MIT",
   "main": "lib/index.js",
   "files": [
