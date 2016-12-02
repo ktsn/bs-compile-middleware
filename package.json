@@ -1,20 +1,19 @@
 {
-  "name": "bs-compiler",
+  "name": "bs-compile-middleware",
   "version": "0.0.0",
   "author": "katashin",
   "description": "",
-  "keywords": [
-  ],
+  "keywords": [],
   "license": "MIT",
   "main": "lib/index.js",
   "files": [
     "lib"
   ],
-  "homepage": "https://github.com/ktsn/bs-compiler",
-  "bugs": "https://github.com/ktsn/bs-compiler/issues",
+  "homepage": "https://github.com/ktsn/bs-compile-middleware",
+  "bugs": "https://github.com/ktsn/bs-compile-middleware/issues",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ktsn/bs-compiler.git"
+    "url": "https://github.com/ktsn/bs-compile-middleware.git"
   },
   "scripts": {
     "prepublish": "npm run release",
@@ -24,7 +23,8 @@
     "flow": "flow check",
     "lint": "eslint src test",
     "lint:fix": "eslint --fix src test",
-    "test": "npm run lint && npm run flow && cross-env NODE_ENV=test mocha --compilers js:babel-register test",
+    "test": "npm run lint && npm run flow && npm run test:unit",
+    "test:unit": "cross-env NODE_ENV=test mocha --compilers js:babel-register test",
     "release": "npm run test && npm run clean && npm run build:prod"
   },
   "devDependencies": {

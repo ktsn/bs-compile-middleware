@@ -1,4 +1,4 @@
-# bs-compiler
+# bs-compile-middleware
 
 ## License
 
