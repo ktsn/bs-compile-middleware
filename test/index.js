@@ -5,6 +5,8 @@ import assert from 'assert'
 import pug from 'pug'
 import { compileMiddleware } from '../src/index'
 
+const noop = () => {}
+
 function test ({
   request,
   expects,
@@ -20,6 +22,7 @@ function test ({
     const exec = () => middleware({
       url: request
     }, {
+      setHeader: noop,
       end: dest => {
         if (expects) {
           assert.equal(dest.trim(), readExpects(expects))

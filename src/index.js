@@ -3,6 +3,7 @@
 import fs from 'fs'
 import path from 'path'
 import url from 'url'
+import mime from 'mime'
 
 interface Options {
   srcDir: string;
@@ -48,6 +49,7 @@ export function compileMiddleware (options: Options) {
           let out
           try {
             out = compiler.compile(data, srcPath)
+            res.setHeader('Content-Type', mime.lookup(pathname))
           } catch (error) {
             out = formatError(error)
           }
