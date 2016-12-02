@@ -22,6 +22,7 @@
   "scripts": {
     "prepublish": "npm run release",
     "clean": "rimraf -rf lib",
+    "dev": "npm run test:unit -- -w",
     "build": "babel src --out-dir lib",
     "build:prod": "cross-env NODE_ENV=production npm run build",
     "flow": "flow check",

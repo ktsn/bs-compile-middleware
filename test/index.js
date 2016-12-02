@@ -1,15 +1,38 @@
+/* globals Promise */
 import fs from 'fs'
 import path from 'path'
 import assert from 'assert'
 import pug from 'pug'
 import { compileMiddleware } from '../src/index'
 
-const noop = () => {}
-
-describe('bs-compile-middleware', () => {
-  it('compiles requested resource', done => {
+function test ({
+  request,
+  expects,
+  compilers
+}) {
+  return new Promise(resolve => {
     const middleware = compileMiddleware({
       srcDir: path.resolve(__dirname, 'fixtures'),
+      compilers
+    })
+
+    const exec = () => middleware({
+      url: request
+    }, {
+      end: dest => {
+        assert.equal(dest.trim(), readExpects(expects))
+      }
+    }, resolve)
+
+    assert.doesNotThrow(exec)
+  })
+}
+
+describe('bs-compile-middleware', () => {
+  it('compiles requested resource', () => {
+    return test({
+      request: 'http://localhost:3000/',
+      expects: 'index.html',
       compilers: [
         {
           reqExt: 'html',
@@ -18,20 +41,11 @@ describe('bs-compile-middleware', () => {
             return pug.render(src, {
               filename,
               pretty: true
-            }).trim()
+            })
           }
         }
       ]
     })
-
-    middleware({
-      url: 'http://localhost:3000/'
-    }, {
-      end: dest => {
-        assert.equal(dest, readExpects('index.html'))
-        done()
-      }
-    }, noop)
   })
 })
 
