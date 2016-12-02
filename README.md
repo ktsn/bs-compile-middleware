@@ -21,6 +21,7 @@ const compileMiddleware = require('bs-compile-middleware').compileMiddleware
 const pug = require('pug')
 
 browserSync({
+  server: true,
   middleware: compileMiddleware({
     srcDir: 'path/to/src',
     compilers: [
