@@ -8,6 +8,7 @@ import { compileMiddleware } from '../src/index'
 function test ({
   request,
   expects,
+  expectsMatch,
   compilers
 }) {
   return new Promise(resolve => {
@@ -20,7 +21,13 @@ function test ({
       url: request
     }, {
       end: dest => {
-        assert.equal(dest.trim(), readExpects(expects))
+        if (expects) {
+          assert.equal(dest.trim(), readExpects(expects))
+        } else if (expectsMatch) {
+          assert(expectsMatch.test(dest.trim()))
+        } else {
+          throw new Error('[test] expects or expectsMatch is required')
+        }
       }
     }, resolve)
 
@@ -33,6 +40,25 @@ describe('bs-compile-middleware', () => {
     return test({
       request: 'http://localhost:3000/',
       expects: 'index.html',
+      compilers: [
+        {
+          reqExt: 'html',
+          srcExt: 'pug',
+          compile: (src, filename) => {
+            return pug.render(src, {
+              filename,
+              pretty: true
+            })
+          }
+        }
+      ]
+    })
+  })
+
+  it('response compile error', () => {
+    return test({
+      request: 'http://localhost:3000/error.html',
+      expectsMatch: /The end of the string reached with no closing bracket \) found./,
       compilers: [
         {
           reqExt: 'html',

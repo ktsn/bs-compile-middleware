@@ -42,11 +42,18 @@ export function compileMiddleware (options: Options) {
 
         fs.readFile(srcPath, (error, data) => {
           if (error) {
-            console.error(error)
+            res.end(formatError(error))
             return next(true)
           }
 
-          res.end(compiler.compile(data, srcPath))
+          let out
+          try {
+            out = compiler.compile(data, srcPath)
+          } catch (error) {
+            out = formatError(error)
+          }
+
+          res.end(out)
           next(true)
         })
       },
@@ -74,4 +81,8 @@ function forEachAsync <T>(
     if (isEnd) return done()
     forEachAsync(tail, f, done)
   })
+}
+
+function formatError (error: Error) {
+  return error.stack
 }
