@@ -1,0 +1,13 @@
+{
+  "presets": [
+    ["latest"]
+  ],
+  "plugins": [
+    "transform-flow-strip-types"
+  ],
+  "env": {
+    "test": {
+      "presets": ["power-assert"]
+    }
+  }
+}

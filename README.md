@@ -1,0 +1,5 @@
+# bs-compiler
+
+## License
+
+MIT
