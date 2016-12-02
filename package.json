@@ -1,6 +1,6 @@
 {
   "name": "bs-compile-middleware",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "katashin",
   "description": "Compilation middleware for Browsersync",
   "keywords": [
