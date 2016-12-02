@@ -4,5 +4,6 @@
   plugins:
     - flowtype
   rules:
+    no-console: 0
     flowtype/define-flow-type: 1
     flowtype/use-flow-type: 1
