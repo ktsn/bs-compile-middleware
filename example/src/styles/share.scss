@@ -1,0 +1,28 @@
+@import './variables';
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  color: $font-color;
+}
+
+.main {
+  padding: 12px;
+
+  .title {
+    font-weight: normal;
+    text-align: center;
+  }
+
+  .body {
+    text-align: center;
+
+    > p {
+      margin: 6px 0;
+    }
+  }
+}
