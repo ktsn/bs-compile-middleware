@@ -43,18 +43,18 @@ export function compileMiddleware (options: Options) {
 
         fs.readFile(srcPath, (error, data) => {
           if (error) {
-            return res.end(formatError(error))
+            setError(res, error)
+            return res.end()
           }
 
-          let out
           try {
-            out = compiler.compile(data, srcPath)
             res.setHeader('Content-Type', mime.lookup(pathname))
+            res.write(compiler.compile(data, srcPath))
           } catch (error) {
-            out = formatError(error)
+            setError(res, error)
           }
 
-          res.end(out)
+          res.end()
         })
       },
       next
@@ -80,6 +80,11 @@ function forEachAsync <T>(
   f(head, () => forEachAsync(tail, f, done))
 }
 
-function formatError (error: Error) {
-  return error.stack
+function setError (res: any, error: Error): void {
+  res.setHeader('Content-Type', 'text/html')
+  res.write(wrapHTMLContent(`<output><pre>${error.stack}</pre></output>`))
+}
+
+function wrapHTMLContent (content: string): string {
+  return `<!DOCTYPE html><html><body>${content}</body><html>`
 }

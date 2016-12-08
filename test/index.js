@@ -19,11 +19,16 @@ function test ({
       compilers
     })
 
+    const buf = []
     const exec = () => middleware({
       url: request
     }, {
       setHeader: noop,
-      end: dest => {
+      write: data => {
+        buf.push(data)
+      },
+      end: () => {
+        const dest = buf.join()
         if (expects) {
           assert.equal(dest.trim(), readExpects(expects))
         } else if (expectsMatch) {
