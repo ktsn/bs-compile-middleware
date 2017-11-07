@@ -20,7 +20,7 @@
     "url": "https://github.com/ktsn/bs-compile-middleware.git"
   },
   "scripts": {
-    "prepublish": "npm run release",
+    "prepublishOnly": "npm run release",
     "clean": "rimraf -rf lib",
     "dev": "npm run test:unit -- -w",
     "example": "npm run build && node example/server.js",
