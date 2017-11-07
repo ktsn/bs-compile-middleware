@@ -49,12 +49,18 @@ export function compileMiddleware (options: Options) {
 
           try {
             res.setHeader('Content-Type', mime.lookup(pathname))
-            res.write(compiler.compile(data, srcPath))
+            const compile = Promise.resolve(compiler.compile(data, srcPath))
+            compile.then((result) => {
+              res.write(result)
+              res.end()
+            }).catch((error) => {
+              setError(res, error)
+              res.end()
+            })
           } catch (error) {
             setError(res, error)
+            res.end()
           }
-
-          res.end()
         })
       },
       next

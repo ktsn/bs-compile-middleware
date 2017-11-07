@@ -82,6 +82,48 @@ describe('bs-compile-middleware', () => {
       ]
     })
   })
+
+  it('returns promise in compile', () => {
+    return test({
+      request: 'http://localhost:3000/',
+      expects: 'index.html',
+      compilers: [
+        {
+          reqExt: 'html',
+          srcExt: 'pug',
+          compile: (src, filename) => {
+            return Promise.resolve().then(() => {
+              return pug.render(src, {
+                filename,
+                pretty: true
+              })
+            })
+          }
+        }
+      ]
+    })
+  })
+
+  it('response compile error with promise', () => {
+    return test({
+      request: 'http://localhost:3000/error.html',
+      expectsMatch: /The end of the string reached with no closing bracket \) found./,
+      compilers: [
+        {
+          reqExt: 'html',
+          srcExt: 'pug',
+          compile: (src, filename) => {
+            return Promise.resolve().then(() => {
+              return pug.render(src, {
+                filename,
+                pretty: true
+              })
+            })
+          }
+        }
+      ]
+    })
+  })
 })
 
 function readExpects (filename) {
